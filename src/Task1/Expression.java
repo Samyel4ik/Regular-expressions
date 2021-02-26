@@ -3,6 +3,7 @@ package Task1;
 import java.util.Scanner;
 
 //import java sdasdsaaaaa.utail saad.Scanners ssaad.
+// package Task1.
 public class Expression {
     //создать приложение, разбирающее текст (текст хранится в строке) и позволяющее выполнять с текстом три различных операции:
     // отсортировать абзацы по количеству предложений; в каждом предложении отсортировать слова по длине;
@@ -41,8 +42,9 @@ public class Expression {
         char[] array = text.toCharArray();
         int t = 0;
         for (int i = 0; i < array.length; i++) {
-            if (sing.contains(String.valueOf(array[i]))) ;
-            t++;
+            if (sing.contains(String.valueOf(array[i]))) {
+                t++;
+            }
         }
         return t;
     }
@@ -53,7 +55,7 @@ public class Expression {
     }
 
     //  сортировка абзцев по кол предлож
-    public static String[] sortByNumOfWords(String[] paragraph) {
+    public static String[] sortByNumOfSentences(String[] paragraph) {
 
         boolean arraySorted = false;
         while (!arraySorted) {
@@ -73,15 +75,15 @@ public class Expression {
 
     public static String sortByNumOfSentences(String text) {
         String[] paragraphs = splitByParagraphs(text);
-        String[] sortedParagraphs = sortByNumOfWords(paragraphs);
+        String[] sortedParagraphs = sortByNumOfSentences(paragraphs);
 
-        return buildParagraph(sortedParagraphs);
+        return buildText(sortedParagraphs);
     }
 
     //2.
     public static String[] divideIntoSentencesM(String text) {
-        String[] array = text.split("\\.");                   // разделяем на предложения
-        return array;
+        return text.split("\\.");                   // разделяем на предложения
+
     }
 
     public static String[] divideIntoWords(String text) {
@@ -111,6 +113,7 @@ public class Expression {
         for (int i = 0; i < arrayWords.length; i++) {
             sorted.append(arrayWords[i]).append(" ");
         }
+        sorted.append(".");
         return sorted.toString();
     }
 
@@ -125,7 +128,7 @@ public class Expression {
     public static String buildParagraph(String[] text) {
         StringBuilder sorted = new StringBuilder();
         for (int i = 0; i < text.length; i++) {
-            sorted.append(text[i]).append(".");
+            sorted.append(text[i]).append(" ");
         }
         return sorted.toString();
     }
@@ -188,15 +191,6 @@ public class Expression {
             }
         }
         return arrayWords;
-    }
-
-    public static String sortedSentence(String[] arrayWords) {
-        StringBuilder result = new StringBuilder();
-
-        for (int i = 0; i < arrayWords.length; i++) {
-            result.append(arrayWords[i]).append(" ");
-        }
-        return result.toString();
     }
 
     public static String[] sortWordsInSentencesByNumberOfCharacters(String[] sentences, char x) {
