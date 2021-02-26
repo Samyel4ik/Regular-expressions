@@ -2,6 +2,7 @@ package Task1;
 
 import java.util.Scanner;
 
+//import java sdasdsaaaaa.utail saad.Scanners ssaad.
 public class Expression {
     //создать приложение, разбирающее текст (текст хранится в строке) и позволяющее выполнять с текстом три различных операции:
     // отсортировать абзацы по количеству предложений; в каждом предложении отсортировать слова по длине;
@@ -16,11 +17,12 @@ public class Expression {
         System.out.println("3.отсортировать лексемы в предложении по убыванию количества вхождений заданного символа, а в случае равенства – по алфавиту.");
 
         int method = scanner.nextInt();
+
         if (method == 1) {
-            System.out.println(createText(text));
+            System.out.println(sortByNumOfSentences(text));
         }
         if (method == 2) {
-            System.out.println(sortedTextByWordsInSentences(text));
+            System.out.println(sortWordsInTextByLength(text));
         }
         if (method == 3) {
             Scanner scanner1 = new Scanner(System.in);
@@ -28,7 +30,7 @@ public class Expression {
             String y = scanner1.nextLine();
             char x = y.charAt(0);
 
-            System.out.println(resultSortedText(text, x));
+            System.out.println(sortWordsInTextByNumberOfCharacters(text, x));
         }
 
     }
@@ -45,11 +47,13 @@ public class Expression {
         return t;
     }
 
-    public static String[] splitByParagraphs(String text) {                 //делим текст на абзацы.
+    //делим текст на абзацы.
+    public static String[] splitByParagraphs(String text) {
         return text.split("\n");
     }
 
-    public static String[] sortByNumOfWords(String[] paragraph) {      //  сортировка абзцев по кол предлож
+    //  сортировка абзцев по кол предлож
+    public static String[] sortByNumOfWords(String[] paragraph) {
 
         boolean arraySorted = false;
         while (!arraySorted) {
@@ -67,31 +71,16 @@ public class Expression {
         return paragraph;
     }
 
-    public static String[] sortedTextBySentences(String text) {
-        String[] paragraph = splitByParagraphs(text);
-        return sortByNumOfWords(paragraph);
+    public static String sortByNumOfSentences(String text) {
+        String[] paragraphs = splitByParagraphs(text);
+        String[] sortedParagraphs = sortByNumOfWords(paragraphs);
+
+        return buildParagraph(sortedParagraphs);
     }
-
-    public static String createText(String text) {
-        String[] sortedParagraph = sortedTextBySentences(text);
-
-        StringBuilder sorted = new StringBuilder();                     // перезаписываем
-        for (int i = 0; i < sortedParagraph.length; i++) {
-            sorted.append(sortedParagraph[i]).append("\n");
-        }
-        return sorted.toString();
-
-    }
-
 
     //2.
-    public static String[] divideIntoParagraphs(String text) {
-        String[] array = text.split("\n");                 //разделяем текст на абзацы
-        return array;
-    }
-
     public static String[] divideIntoSentencesM(String text) {
-        String[] array = text.split(".");                   // разделяем на предложения
+        String[] array = text.split("\\.");                   // разделяем на предложения
         return array;
     }
 
@@ -125,23 +114,52 @@ public class Expression {
         return sorted.toString();
     }
 
-    public static String sortedTextByWordsInSentences(String text) {
-        String[] divideIntoParagraphs = divideIntoParagraphs(text);                                // разбиваем на aбзацы
-
-        StringBuilder sortParagraphByWordLength = new StringBuilder();
-        StringBuilder sortedTextByWordsInSentences = new StringBuilder();
-
-        for (int i = 0; i < divideIntoParagraphs.length; i++) {
-            String[] divideIntoSentencesM = divideIntoSentencesM(divideIntoParagraphs[i]);                      // разбиваем абзац на предложения
-            String[] divideIntoWords = divideIntoWords(String.valueOf(divideIntoSentencesM));                  // разбиваем предложение  на слова
-            String[] sortingWords = sortingWords(divideIntoWords);                                           // отсортировали слова  в предлож
-            String buildSentence = buildSentence(sortingWords);                                              // собрали предложение
-            String textResult = sortParagraphByWordLength.append(buildSentence).append(".").toString();     //собрали абзац
-            sortedTextByWordsInSentences.append(textResult).append("\n");
+    public static String buildText(String[] str) {
+        StringBuilder sorted = new StringBuilder();
+        for (int i = 0; i < str.length; i++) {
+            sorted.append(str[i]).append("\n");
         }
-        return sortedTextByWordsInSentences.toString();
+        return sorted.toString();
     }
 
+    public static String buildParagraph(String[] text) {
+        StringBuilder sorted = new StringBuilder();
+        for (int i = 0; i < text.length; i++) {
+            sorted.append(text[i]).append(".");
+        }
+        return sorted.toString();
+    }
+
+    static String sortWordsInTextByLength(String text) {
+        String[] paragraphs = splitByParagraphs(text);
+        String[] sortedParagraphs = sortWordsInParagraphsByLength(paragraphs);
+
+        return buildText(sortedParagraphs);
+    }
+
+    static String[] sortWordsInParagraphsByLength(String[] paragraphs) {
+        String[] result = new String[paragraphs.length];
+        for (int i = 0; i < paragraphs.length; i++) {
+            String[] sentences = divideIntoSentencesM(paragraphs[i]);
+            String[] sortedSentences = sortWordsInSentencesByLength(sentences);
+
+            result[i] = buildParagraph(sortedSentences);
+        }
+
+        return result;
+    }
+
+    static String[] sortWordsInSentencesByLength(String[] sentences) {
+        String[] result = new String[sentences.length];
+        for (int i = 0; i < sentences.length; i++) {
+            String[] words = divideIntoWords(sentences[i]);
+            String[] sortedWords = sortingWords(words);
+
+            result[i] = buildSentence(sortedWords);
+        }
+
+        return result;
+    }
 
     //  3.отсортировать слова по количеству заданаго символа , в предложении(по убыванию),елси символов одинаково по алфавиту.
     public static int numWord(String str, char x) {
@@ -181,20 +199,32 @@ public class Expression {
         return result.toString();
     }
 
-    public static String resultSortedText(String text, char x) {
-        String[] arrayParagraph = divideIntoParagraphs(text);                               //абзац
-        StringBuilder result1 = new StringBuilder();
-        StringBuilder resultTextSorted = new StringBuilder();
+    public static String[] sortWordsInSentencesByNumberOfCharacters(String[] sentences, char x) {
+        String[] result = new String[sentences.length];
+        for (int i = 0; i < sentences.length; i++) {
+            String[] words = divideIntoWords(sentences[i]);
+            String[] sortedWords = sortedSentenceWord(words, x);
+            result[i] = buildSentence(sortedWords);
+        }
+        return result;
+    }
 
-        for (int i = 0; i < arrayParagraph.length; i++) {
-            String[] divideIntoSentencesM = divideIntoSentencesM(arrayParagraph[i]);       //предложение
-            String[] divideIntoWords = divideIntoWords(String.valueOf(divideIntoSentencesM)); // слово
-            String[] sortedSentenceWord = sortedSentenceWord(divideIntoWords, x);            // сортировка
-            String sortedSentence = sortedSentence(sortedSentenceWord);                      //склеили предложение
-            String text1 = result1.append(sortedSentence).append(".").toString();
-            resultTextSorted.append(text1).append("\n");
+    static String[] sortWordsInParagraphsByNumberOfCharacters(String[] paragraphs, char x) {
+        String[] result = new String[paragraphs.length];
+        for (int i = 0; i < paragraphs.length; i++) {
+            String[] sentences = divideIntoSentencesM(paragraphs[i]);
+            String[] sortedSentences = sortWordsInSentencesByNumberOfCharacters(sentences, x);
+
+            result[i] = buildParagraph(sortedSentences);
         }
 
-        return resultTextSorted.toString();
+        return result;
+    }
+
+    static String sortWordsInTextByNumberOfCharacters(String text, char x) {
+        String[] paragraphs = splitByParagraphs(text);
+        String[] sortedParagraphs = sortWordsInParagraphsByNumberOfCharacters(paragraphs, x);
+
+        return buildText(sortedParagraphs);
     }
 }
