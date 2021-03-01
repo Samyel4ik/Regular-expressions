@@ -4,7 +4,6 @@ public class M3T203 {
     //Даны открывающиеся и закрывающиеся тэги. Вывести в консоль их имена и тип
     public static void main(String[] args) {
         String string = "<head><body/><child><head/>";
-        StringBuilder result = new StringBuilder();
         char[] array = string.toCharArray();
 
         boolean tagFound = false;
