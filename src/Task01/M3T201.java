@@ -5,7 +5,7 @@ public class M3T201 {
     public static void main(String[] args) {
         String text = "<head><body><child><head>";
         StringBuilder result = new StringBuilder();
-        char [] array = text.toCharArray();
+        char[] array = text.toCharArray();
 
         boolean tagFound = false;
         String str = "";
@@ -13,15 +13,15 @@ public class M3T201 {
         for (int i = 0; i < array.length; i++) {
 
             if (array[i] == '<') {
-                tagFound=true;
+                tagFound = true;
                 continue;
             }
-            if (array[i]== '>') {
+            if (array[i] == '>') {
                 tagFound = false;
-                str+=",";
+                str += ",";
             }
-            if (tagFound){
-                str+=array[i];
+            if (tagFound) {
+                str += array[i];
             }
         }
         result.append(str);
