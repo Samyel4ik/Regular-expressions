@@ -17,15 +17,13 @@ public class M3T203 {
                 continue;
             }
             if (array[i] == '>') {
-                System.out.println("открывающий тэг:"+ str);
+                System.out.println("открывающий тэг:" + str);
                 str = "";
                 tagFound = false;
-
-
             }
             if (array[i] == '/') {
-                System.out.println("закрывающий тэг:"+ str);
-                str="";
+                System.out.println("закрывающий тэг:" + str);
+                str = "";
                 tagFound = false;
 
             }
