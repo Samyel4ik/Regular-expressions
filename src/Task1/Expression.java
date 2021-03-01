@@ -35,7 +35,6 @@ public class Expression {
         }
 
     }
-
     //1.
     public static int numOfSentences(String text) {                   // подсчет предложений в абзаце
         String sing = "!.?";
