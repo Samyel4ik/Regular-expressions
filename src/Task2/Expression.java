@@ -93,7 +93,12 @@ public class Expression {
                 flag = true;
                 continue;
             }
-            if (array[i] == '<') {
+            if (array[i] == '<' && array[i + 1] != '/') {
+                timeString = "";
+                flag = false;
+            }
+
+            if (array[i] == '<' && array[i + 1] == '/') {
                 System.out.println(timeString);
                 timeString = "";
                 flag = false;
