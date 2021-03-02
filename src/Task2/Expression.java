@@ -31,8 +31,7 @@ public class Expression {
                 "</notes>";
 
         String ss = lineWithoutHyphenation(characterArray(xml));
-
-        tagContent(characterArray(xml)); // вывод контента тега
+        tagContent(characterArray(ss)); // вывод контента тега
         tagName(characterArray(ss)); // вывод название тегов!
     }
 
@@ -107,6 +106,5 @@ public class Expression {
                 timeString += array[i];
             }
         }
-
     }
 }
