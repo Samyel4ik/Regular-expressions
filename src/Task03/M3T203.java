@@ -15,12 +15,12 @@ public class M3T203 {
                 tagFound = true;
                 continue;
             }
-            if (array[i] == '>') {
+            if (array[i] == '>' && array[i - 1] != '/') {
                 System.out.println("открывающий тэг:" + str);
                 str = "";
                 tagFound = false;
             }
-            if (array[i] == '/') {
+            if (array[i] == '/' && array[i + 1] == '>') {
                 System.out.println("закрывающий тэг:" + str);
                 str = "";
                 tagFound = false;

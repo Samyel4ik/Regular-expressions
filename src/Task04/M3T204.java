@@ -18,13 +18,13 @@ public class M3T204 {
 
             if (array[i] == '<') {
                 contentFound = false;
+                System.out.println(str);
+                str = "";
             }
 
             if (contentFound) {
                 str += array[i];
             }
         }
-        result.append(str);
-        System.out.println(result.toString());
     }
 }
