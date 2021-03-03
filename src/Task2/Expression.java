@@ -52,11 +52,9 @@ public class Expression {
         return text.toString();
     }
 
-
     //какой тег и его название
     public static void result(char[] array) {
-        String tagNameOpen = "";
-        String tagNameClosed = "";
+        String tagName = "";
         String content = "";
         boolean openingTagFound = false;
         boolean contentFound = false;
@@ -69,12 +67,12 @@ public class Expression {
                 continue;
             }
             if (array[i] == '>' && openingTagFound == true) {
-                System.out.println("Открывающий тег:" + tagNameOpen);
-                tagNameOpen = "";
+                System.out.println("Открывающий тег:" + tagName);
+                tagName = "";
                 openingTagFound = false;
             }
             if (openingTagFound) {
-                tagNameOpen += array[i];
+                tagName += array[i];
             }
             // закрывающий тег
             if (array[i] == '/' && array[i - 1] == '<') {
@@ -82,12 +80,12 @@ public class Expression {
                 continue;
             }
             if (array[i] == '>' && endTagFound == true) {
-                System.out.println("Закрывающий тег:" + tagNameClosed);
-                tagNameClosed = "";
+                System.out.println("Закрывающий тег:" + tagName);
+                tagName = "";
                 endTagFound = false;
             }
             if (endTagFound) {
-                tagNameClosed += array[i];
+                tagName += array[i];
             }
             //контент тега
             if (array[i] == '>') {
@@ -95,7 +93,7 @@ public class Expression {
                 continue;
             }
             if (array[i] == '<' && array[i + 1] == '/' && content.length() > 0) {
-                System.out.println("Контент тега " + tagNameOpen + " " + content);
+                System.out.println("Контент тега " + tagName + " " + content);
                 content = "";
                 contentFound = false;
             }
