@@ -31,8 +31,8 @@ public class Expression {
                 "</notes>";
 
         String ss = lineWithoutHyphenation(characterArray(xml));
-        tagContent(characterArray(ss)); // вывод контента тега
-        tagName(characterArray(ss)); // вывод название тегов!
+        result(characterArray(ss)); // вывод контента
+
     }
 
     //разделяем весь файл на массив символов
@@ -52,58 +52,55 @@ public class Expression {
         return text.toString();
     }
 
+
     //какой тег и его название
-    public static void tagName(char[] array) {
-        String timeString = "";
-        int x = 0;
-        boolean flag = false;
+    public static void result(char[] array) {
+        String tagNameOpen = "";
+        String tagNameClosed = "";
+        String content = "";
+        boolean openingTagFound = false;
+        boolean contentFound = false;
+        boolean endTagFound = false;
 
         for (int i = 0; i < array.length; i++) {
-            if (array[i] == '<' || array[i] == '/') {
-                flag = true;
-                continue;
-            }
-            if (array[i - 1 - x] != '/' && array[i] == '>') {
-                System.out.println("Открывающий тег:" + timeString);
-                timeString = "";
-                x = 0;
-                flag = false;
-            }
-            if (array[i] == '>' && array[i - x - 1] == '/') {
-                System.out.println("Закрывающий тег:" + timeString);
-                timeString = "";
-                x = 0;
-                flag = false;
-            }
-            if (flag) {
-                x++;
-                timeString += array[i];
-            }
-        }
-    }
-
-    // контент тега
-    public static void tagContent(char[] array) {
-        String timeString = "";
-        boolean flag = false;
-
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] == '>') {
-                flag = true;
-                continue;
-            }
+            // открывающий тег
             if (array[i] == '<' && array[i + 1] != '/') {
-                timeString = "";
-                flag = false;
+                openingTagFound = true;
+                continue;
             }
-
-            if (array[i] == '<' && array[i + 1] == '/') {
-                System.out.println(timeString);
-                timeString = "";
-                flag = false;
+            if (array[i] == '>' && openingTagFound == true) {
+                System.out.println("Открывающий тег:" + tagNameOpen);
+                tagNameOpen = "";
+                openingTagFound = false;
             }
-            if (flag) {
-                timeString += array[i];
+            if (openingTagFound) {
+                tagNameOpen += array[i];
+            }
+            // закрывающий тег
+            if (array[i] == '/' && array[i - 1] == '<') {
+                endTagFound = true;
+                continue;
+            }
+            if (array[i] == '>' && endTagFound == true) {
+                System.out.println("Закрывающий тег:" + tagNameClosed);
+                tagNameClosed = "";
+                endTagFound = false;
+            }
+            if (endTagFound) {
+                tagNameClosed += array[i];
+            }
+            //контент тега
+            if (array[i] == '>') {
+                contentFound = true;
+                continue;
+            }
+            if (array[i] == '<' && array[i + 1] == '/' && content.length() > 0) {
+                System.out.println("Контент тега " + tagNameOpen + " " + content);
+                content = "";
+                contentFound = false;
+            }
+            if (contentFound) {
+                content += array[i];
             }
         }
     }
